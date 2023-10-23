@@ -113,7 +113,7 @@ public class Manager implements ManagerInterface {
     @Override
     public void deleteEpicById(int id) {
         ArrayList<Integer> subsIds = epics.get(id).getSubTasksIds();
-        for (int subId : subsIds){
+        for (int subId : subsIds) {
             subtasks.remove(subId);
         }
         epics.remove(id);
