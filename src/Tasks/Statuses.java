@@ -1,3 +1,5 @@
+package Tasks;
+
 public enum Statuses {
     NEW,
     DONE,
