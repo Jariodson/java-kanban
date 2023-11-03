@@ -4,9 +4,9 @@ public class Task {
     protected String name;
     protected String description;
     protected int id;
-    protected String status;
+    protected Statuses status;
 
-    public Task(String name, String description, String status) {
+    public Task(String name, String description, Statuses status) {
         this.name = name;
         this.description = description;
         this.status = status;
@@ -14,7 +14,7 @@ public class Task {
 
     @Override
     public String toString() {
-        return "Tasks.Task{" +
+        return "Task{" +
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", id=" + id +
@@ -26,11 +26,11 @@ public class Task {
         this.id = id;
     }
 
-    public String getStatus() {
+    public Statuses getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Statuses status) {
         this.status = status;
     }
 
