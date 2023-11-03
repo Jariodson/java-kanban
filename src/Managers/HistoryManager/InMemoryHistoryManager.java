@@ -1,6 +1,5 @@
-package Manager.HistoryManager;
+package Managers.HistoryManager;
 
-import Manager.Managers;
 import Tasks.Task;
 
 import java.util.ArrayList;
@@ -8,10 +7,11 @@ import java.util.List;
 
 public class InMemoryHistoryManager implements HistoryManager {
     private final List<Task> lastTenTasks = new ArrayList<>();
+
     @Override
     public void add(Task task) {
         lastTenTasks.add(task);
-        if (lastTenTasks.size() > 10){
+        if (lastTenTasks.size() > 10) {
             lastTenTasks.remove(0);
         }
     }
