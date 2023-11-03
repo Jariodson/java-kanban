@@ -8,9 +8,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Manager implements ManagerInterface {
-    private HashMap<Integer, Task> tasks = new HashMap<>();
-    private HashMap<Integer, Epic> epics = new HashMap<>();
-    private HashMap<Integer, Subtask> subtasks = new HashMap<>();
+    private final HashMap<Integer, Task> tasks = new HashMap<>();
+    private final HashMap<Integer, Epic> epics = new HashMap<>();
+    private final HashMap<Integer, Subtask> subtasks = new HashMap<>();
     private int genId = 0;
 
     @Override
@@ -43,7 +43,7 @@ public class Manager implements ManagerInterface {
     public void deleteSubtasks() {
         subtasks.clear();
         for (Epic epic : epics.values()) {
-            epic.getSubTasksIds().clear();
+            epic.getSubTasksId().clear();
             epic.setStatus("NEW");
         }
     }
@@ -118,7 +118,7 @@ public class Manager implements ManagerInterface {
 
     @Override
     public void deleteEpicById(int epicId) {
-        ArrayList<Integer> subsIds = epics.get(epicId).getSubTasksIds();
+        ArrayList<Integer> subsIds = epics.get(epicId).getSubTasksId();
         for (int subId : subsIds) {
             subtasks.remove(subId);
         }
@@ -128,7 +128,7 @@ public class Manager implements ManagerInterface {
     @Override
     public void deleteSubtaskById(int subtaskId) {
         Epic epic = epics.get(subtasks.get(subtaskId).getEpicId());
-        epic.getSubTasksIds().remove(subtaskId);
+        epic.getSubTasksId().remove(subtaskId);
         subtasks.remove(subtaskId);
         updateEpicStatus(epic.getId());
     }
@@ -136,7 +136,7 @@ public class Manager implements ManagerInterface {
     @Override
     public ArrayList<Subtask> getEpicSubtasksById(int epicId) {
         ArrayList<Subtask> epicSubtasks = new ArrayList<>();
-        for (Integer subtaskId : epics.get(epicId).getSubTasksIds()) {
+        for (Integer subtaskId : epics.get(epicId).getSubTasksId()) {
             epicSubtasks.add(subtasks.get(subtaskId));
         }
         return epicSubtasks;
@@ -145,10 +145,10 @@ public class Manager implements ManagerInterface {
     private void updateEpicStatus(int epicId) {
         Epic epic = epics.get(epicId);
         ArrayList<String> subStatuses = new ArrayList<>();
-        if (epic.getSubTasksIds().isEmpty()) {
+        if (epic.getSubTasksId().isEmpty()) {
             epic.setStatus("NEW");
         }
-        for (int id : epic.getSubTasksIds()) {
+        for (int id : epic.getSubTasksId()) {
             Subtask subtask = subtasks.get(id);
             subStatuses.add(subtask.getStatus());
         }
