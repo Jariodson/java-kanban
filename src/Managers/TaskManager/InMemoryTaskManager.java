@@ -1,13 +1,15 @@
-package Manager;
+package Manager.TaskManager;
 
+import Manager.Managers;
 import Tasks.Epic;
+import Tasks.Statuses;
 import Tasks.Subtask;
 import Tasks.Task;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Manager implements ManagerInterface {
+public class InMemoryTaskManager implements TaskManager {
     private final HashMap<Integer, Task> tasks = new HashMap<>();
     private final HashMap<Integer, Epic> epics = new HashMap<>();
     private final HashMap<Integer, Subtask> subtasks = new HashMap<>();
@@ -44,22 +46,25 @@ public class Manager implements ManagerInterface {
         subtasks.clear();
         for (Epic epic : epics.values()) {
             epic.getSubTasksId().clear();
-            epic.setStatus("NEW");
+            epic.setStatus(Statuses.NEW);
         }
     }
 
     @Override
     public Task getTaskById(int taskId) {
+        Managers.getDefaultHistory().add(tasks.get(taskId));
         return tasks.get(taskId);
     }
 
     @Override
     public Epic getEpicById(int epicId) {
+        Managers.getDefaultHistory().add(epics.get(epicId));
         return epics.get(epicId);
     }
 
     @Override
     public Subtask getSubtaskById(int subtaskId) {
+        Managers.getDefaultHistory().add(subtasks.get(subtaskId));
         return subtasks.get(subtaskId);
     }
 
@@ -91,21 +96,21 @@ public class Manager implements ManagerInterface {
 
     @Override
     public void updateTask(Task task) {
-        if (tasks.containsKey(task.getId())){
+        if (tasks.containsKey(task.getId())) {
             tasks.put(task.getId(), task);
         }
     }
 
     @Override
     public void updateEpic(Epic epic) {
-        if (epics.containsKey(epic.getId())){
+        if (epics.containsKey(epic.getId())) {
             epics.put(epic.getId(), epic);
         }
     }
 
     @Override
     public void updateSubtask(Subtask subtask) {
-        if (subtasks.containsKey(subtask.getId()) && epics.containsKey(subtask.getEpicId())){
+        if (subtasks.containsKey(subtask.getId()) && epics.containsKey(subtask.getEpicId())) {
             subtasks.put(subtask.getId(), subtask);
             updateEpicStatus(subtask.getEpicId());
         }
@@ -144,21 +149,21 @@ public class Manager implements ManagerInterface {
 
     private void updateEpicStatus(int epicId) {
         Epic epic = epics.get(epicId);
-        ArrayList<String> subStatuses = new ArrayList<>();
+        ArrayList<Statuses> subStatuses = new ArrayList<>();
         if (epic.getSubTasksId().isEmpty()) {
-            epic.setStatus("NEW");
+            epic.setStatus(Statuses.NEW);
         }
         for (int id : epic.getSubTasksId()) {
             Subtask subtask = subtasks.get(id);
             subStatuses.add(subtask.getStatus());
         }
-        for (String status : subStatuses) {
-            if (status.equals(subStatuses.get(0)) && status.equals("DONE")) {
+        for (Statuses status : subStatuses) {
+            if (status.equals(subStatuses.get(0)) && status.equals(Statuses.DONE)) {
                 epic.setStatus(status);
-            } else if (status.equals(subStatuses.get(0)) && status.equals("NEW")) {
+            } else if (status.equals(subStatuses.get(0)) && status.equals(Statuses.NEW)) {
                 epic.setStatus(status);
             } else {
-                epic.setStatus("IN_PROGRESS");
+                epic.setStatus(Statuses.IN_PROGRESS);
                 break;
             }
         }

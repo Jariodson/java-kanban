@@ -1,12 +1,13 @@
-package Manager;
+package Manager.TaskManager;
 
 import Tasks.Epic;
 import Tasks.Subtask;
 import Tasks.Task;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public interface ManagerInterface {
+public interface TaskManager {
     ArrayList<Task> getTasks();
 
     ArrayList<Epic> getEpics();
