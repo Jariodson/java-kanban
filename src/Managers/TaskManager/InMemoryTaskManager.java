@@ -1,5 +1,6 @@
 package Managers.TaskManager;
 
+import Managers.HistoryManager.HistoryManager;
 import Managers.HistoryManager.InMemoryHistoryManager;
 import Managers.Managers;
 import Tasks.Epic;
@@ -15,7 +16,7 @@ public class InMemoryTaskManager implements TaskManager {
     private final HashMap<Integer, Task> tasks = new HashMap<>();
     private final HashMap<Integer, Epic> epics = new HashMap<>();
     private final HashMap<Integer, Subtask> subtasks = new HashMap<>();
-    private final InMemoryHistoryManager inMemoryHistoryManager = (InMemoryHistoryManager) Managers.getDefaultHistory();
+    private final HistoryManager inMemoryHistoryManager = Managers.getDefaultHistory();
     private int genId = 0;
 
     @Override
