@@ -44,7 +44,7 @@ public class Main {
         subtask1 = inMemoryTaskManager.getSubtaskById(subtask1Id);
 
 
-        for (Task task : Managers.getDefaultHistory().getHistory()) {
+        for (Task task : inMemoryTaskManager.getHistory()) {
             System.out.println(task);
         }
     }
