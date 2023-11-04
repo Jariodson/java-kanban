@@ -1,5 +1,6 @@
 import Managers.Managers;
 import Managers.TaskManager.InMemoryTaskManager;
+import Managers.TaskManager.TaskManager;
 import Tasks.Epic;
 import Tasks.Statuses;
 import Tasks.Subtask;
@@ -8,7 +9,7 @@ import Tasks.Task;
 public class Main {
 
     public static void main(String[] args) {
-        InMemoryTaskManager inMemoryTaskManager = (InMemoryTaskManager) Managers.getDefault();
+        TaskManager inMemoryTaskManager = Managers.getDefault();
         Task task1 = new Task("Task1-1", "Первая задача", Statuses.NEW);
         final int task1Id = inMemoryTaskManager.createTask(task1);
 
