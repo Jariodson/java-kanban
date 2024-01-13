@@ -28,7 +28,7 @@ public class Main {
         System.out.println("Список задач:");
         List<Task> tasks = new ArrayList<>(inMemoryTaskManager.getEpics());
         tasks.addAll(inMemoryTaskManager.getSubtasks());
-        for (Task task : tasks){
+        for (Task task : tasks) {
             System.out.println(task.toString());
         }
         System.out.println();
@@ -41,7 +41,7 @@ public class Main {
 
         System.out.println("История просмотров:");
         List<Task> tasksHistory = inMemoryTaskManager.getHistory();
-        for(Task task : tasksHistory) {
+        for (Task task : tasksHistory) {
             System.out.println(task);
         }
         System.out.println();
@@ -49,7 +49,7 @@ public class Main {
         System.out.println("История после удаления задачи:");
         inMemoryTaskManager.deleteEpicById(epic1Id);
         tasksHistory = inMemoryTaskManager.getHistory();
-        for(Task task : tasksHistory) {
+        for (Task task : tasksHistory) {
             System.out.println(task);
         }
     }

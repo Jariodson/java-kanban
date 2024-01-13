@@ -7,7 +7,8 @@ import java.util.*;
 public class InMemoryHistoryManager implements HistoryManager {
     private static final int COUNT_OF_TASKS = 10;
     private static final int FIRST_TASK = 0;
-    private static class Node{
+
+    private static class Node {
         private Node next; //хвост(последняя)
         private Node prev; //голова(первая)
         private final Task task; //центр
@@ -25,12 +26,16 @@ public class InMemoryHistoryManager implements HistoryManager {
             this.task = task;
         }
     }
+
     private final Map<Integer, Node> nodeMap = new HashMap<>();
     private Node last;
     private Node first;
 
     @Override
     public void add(Task task) {
+        if (task == null) {
+            return;
+        }
         Node node = nodeMap.remove(task.getId());
         removeNode(node);
         Node newNode = linkLast(task);
@@ -41,29 +46,29 @@ public class InMemoryHistoryManager implements HistoryManager {
         final Node oldNode = this.last;
         final Node newNode = new Node(null, oldNode, task);
         this.last = newNode;
-        if (oldNode == null){
+        if (oldNode == null) {
             this.first = newNode;
-        }else {
-            last.prev = oldNode;
+        } else {
             oldNode.next = newNode;
         }
         return newNode;
     }
 
-    private ArrayList<Task> getTasks() {
+    private List<Task> getTasks() {
         ArrayList<Task> tasks = new ArrayList<>();
-        for(Node i = last; i != null; i = i.prev) {
+        for (Node i = last; i != null; i = i.prev) {
             tasks.add(i.task);
         }
         return tasks;
     }
-    private void removeNode(Node node){
-        if(node != null) {
-            if(node.prev == null) {
-                first  = node.next;
-                if (node.next != null){
-                    node.next.prev = null; //ошибка
-                }else{
+
+    private void removeNode(Node node) {
+        if (node != null) {
+            if (node.prev == null) {
+                first = node.next;
+                if (node.next != null) {
+                    node.next.prev = null;
+                } else {
                     last = null;
                 }
             } else if (node.next != null) {
