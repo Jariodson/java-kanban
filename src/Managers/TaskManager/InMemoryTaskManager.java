@@ -3,11 +3,10 @@ package Managers.TaskManager;
 import Managers.HistoryManager.HistoryManager;
 import Managers.Managers;
 import Tasks.Epic;
-import Tasks.Statuses;
+import Tasks.Enums.Statuses;
 import Tasks.Subtask;
 import Tasks.Task;
 
-import java.net.Inet4Address;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,7 +16,7 @@ public class InMemoryTaskManager implements TaskManager {
     private final Map<Integer, Task> tasks = new HashMap<>();
     private final Map<Integer, Epic> epics = new HashMap<>();
     private final Map<Integer, Subtask> subtasks = new HashMap<>();
-    private final HistoryManager inMemoryHistoryManager = Managers.getDefaultHistory();
+    protected final HistoryManager inMemoryHistoryManager = Managers.getDefaultHistory();
     private int genId = 0;
 
     @Override
@@ -52,6 +51,7 @@ public class InMemoryTaskManager implements TaskManager {
     public void deleteEpics() {
         for (Epic epic : epics.values()) {
             inMemoryHistoryManager.remove(epic.getId());
+            tasks.remove(epic.getId());
             for (Integer subtaskId : epic.getSubTasksId()) {
                 inMemoryHistoryManager.remove(subtaskId);
             }

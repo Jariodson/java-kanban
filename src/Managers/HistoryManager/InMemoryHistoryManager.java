@@ -5,27 +5,6 @@ import Tasks.Task;
 import java.util.*;
 
 public class InMemoryHistoryManager implements HistoryManager {
-    private static final int COUNT_OF_TASKS = 10;
-    private static final int FIRST_TASK = 0;
-
-    private static class Node {
-        private Node next; //хвост(последняя)
-        private Node prev; //голова(первая)
-        private final Task task; //центр
-
-        @Override
-        public String toString() {
-            return "Node{" +
-                    "task=" + task.getId() +
-                    '}';
-        }
-
-        public Node(Node next, Node prev, Task task) {
-            this.next = next;
-            this.prev = prev;
-            this.task = task;
-        }
-    }
 
     private final Map<Integer, Node> nodeMap = new HashMap<>();
     private Node last;
@@ -90,5 +69,24 @@ public class InMemoryHistoryManager implements HistoryManager {
     @Override
     public List<Task> getHistory() {
         return getTasks();
+    }
+
+    private static class Node {
+        private Node next;
+        private Node prev;
+        private final Task task;
+
+        @Override
+        public String toString() {
+            return "Node{" +
+                    "task=" + task.getId() +
+                    '}';
+        }
+
+        public Node(Node next, Node prev, Task task) {
+            this.next = next;
+            this.prev = prev;
+            this.task = task;
+        }
     }
 }

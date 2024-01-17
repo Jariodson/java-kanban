@@ -1,4 +1,4 @@
-package Tasks;
+package Tasks.Enums;
 
 public enum Statuses {
     NEW,

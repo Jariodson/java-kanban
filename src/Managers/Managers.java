@@ -1,13 +1,14 @@
 package Managers;
 
+import Managers.Files.CSVFormat;
+import Managers.Files.FileBackedTasksManager;
 import Managers.HistoryManager.HistoryManager;
 import Managers.HistoryManager.InMemoryHistoryManager;
-import Managers.TaskManager.InMemoryTaskManager;
 import Managers.TaskManager.TaskManager;
 
 public class Managers {
     public static TaskManager getDefault() {
-        return new InMemoryTaskManager();
+        return new FileBackedTasksManager(CSVFormat.getFILE());
     }
 
     public static HistoryManager getDefaultHistory() {
