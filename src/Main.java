@@ -26,6 +26,12 @@ public class Main {
         System.out.println("Из файла");
         System.out.println(fileBackedTasksManager1.getHistory());
         System.out.println();
+
+        final int epic2Id = fileBackedTasksManager1.createEpic(
+                new Epic("Epic1-2", "Второй эпик", Statuses.NEW));
+
+        System.out.println(fileBackedTasksManager1.getTasks());
         System.out.println(fileBackedTasksManager1.getEpics());
+        System.out.println(fileBackedTasksManager1.getSubtasks());
     }
 }

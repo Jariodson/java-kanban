@@ -19,13 +19,12 @@ import java.util.Map;
 import static Managers.Files.CSVFormat.*;
 
 public class FileBackedTasksManager extends InMemoryTaskManager {
-    File fileName;
+    protected final File fileName;
+    private final CSVFormat csvFormat = new CSVFormat();
 
     public FileBackedTasksManager(File fileName) {
         this.fileName = fileName;
     }
-
-    CSVFormat csvFormat = new CSVFormat();
 
     @Override
     public int createSubtask(Subtask subtask) {
@@ -107,7 +106,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                 bufferedWriter.write(csvFormat.toString(subtask) + '\n');
             }
             bufferedWriter.write('\n');
-            bufferedWriter.write(String.join(",", historyToString(inMemoryHistoryManager)));
+            bufferedWriter.write(historyToString(inMemoryHistoryManager));
         } catch (IOException e) {
             throw new ManagerSaveException("Ошибка записи файла");
         }
@@ -122,25 +121,32 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
             throw new ManagerSaveException("Ошибка чтения файла");
         }
         Map<Integer, Task> tasks = new HashMap<>();
+        int maxId = 0;
         for (int i = 1; i < lines.size() - 2; i++) {
             if (lines.get(i).isEmpty()) {
                 break;
             }
             final Task task = fromString(lines.get(i));
             tasks.put(task.getId(), task);
+            if (maxId < task.getId()){
+                maxId = task.getId();
+            }
+
             TaskTypes types = task.getClassType();
             switch (types) {
                 case SUBTASK:
-                    fileBackedTasksManager.createSubtask((Subtask) task);
+                    fileBackedTasksManager.subtasks.put(task.getId(), (Subtask) task);
+                    fileBackedTasksManager.epics.get(((Subtask) task).getEpicId()).addSubTasksId(task.getId());
                     break;
                 case EPIC:
-                    fileBackedTasksManager.createEpic((Epic) task);
+                    fileBackedTasksManager.epics.put(task.getId(), (Epic) task);
                     break;
                 default:
-                    fileBackedTasksManager.createTask(task);
+                    fileBackedTasksManager.tasks.put(task.getId(), task);
                     break;
             }
         }
+        fileBackedTasksManager.genId = maxId;
         List<Integer> history = new ArrayList<>();
         if (!lines.get((lines.size()) - 1).isEmpty()) {
             history = historyFromString(lines.get((lines.size()) - 1));
