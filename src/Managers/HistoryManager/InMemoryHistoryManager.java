@@ -13,7 +13,7 @@ public class InMemoryHistoryManager implements HistoryManager {
     @Override
     public void add(Task task) {
         if (task == null) {
-            return;
+            throw new NullPointerException("Пустая задача.");
         }
         Node node = nodeMap.remove(task.getId());
         removeNode(node);

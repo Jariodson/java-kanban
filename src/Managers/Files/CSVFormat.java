@@ -6,25 +6,34 @@ import Tasks.Enums.Statuses;
 import Tasks.Enums.TaskTypes;
 
 import java.io.File;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CSVFormat {
-    private static final File file = new File("resources/tasks.csv");
-
-    public static File getFILE() {
-        return file;
-    }
 
     public String toString(Task task) {
         if (task.getClassType().equals(TaskTypes.SUBTASK)) {
-            return String.join(",", task.getId().toString(), task.getClassType().toString(),
-                    task.getName(), task.getStatus().toString(),
-                    task.getDescription(), ((Subtask) task).getEpicId().toString());
+            return String.join(",", task.getId().toString(),
+                    task.getClassType().toString(),
+                    task.getName(),
+                    task.getStatus().toString(),
+                    task.getDescription(),
+                    task.getStartTime(),
+                    task.getDuration().toString(),
+                    task.getEndTime(),
+                    ((Subtask) task).getEpicId().toString()
+            );
         } else {
-            return String.join(",", task.getId().toString(), task.getClassType().toString(),
-                    task.getName(), task.getStatus().toString(),
-                    task.getDescription());
+            return String.join(",", task.getId().toString(),
+                    task.getClassType().toString(),
+                    task.getName(),
+                    task.getStatus().toString(),
+                    task.getDescription(),
+                    task.getStartTime(),
+                    task.getDuration().toString(),
+                    task.getEndTime()
+            );
         }
     }
 
@@ -36,12 +45,36 @@ public class CSVFormat {
             task = value.split(",");
         }
         TaskTypes type = TaskTypes.valueOf(task[1]);
-        if (type == TaskTypes.SUBTASK) {
-            return new Subtask(Integer.parseInt(task[0]), task[2], Statuses.valueOf(task[3]), task[4], Integer.parseInt(task[5]));
-        } else if (type == TaskTypes.EPIC) {
-            return new Epic(Integer.parseInt(task[0]), task[2], Statuses.valueOf(task[3]), task[4]);
+        switch (type) {
+            case SUBTASK:
+                return new Subtask(
+                        Integer.parseInt(task[0]),
+                        task[2],
+                        Statuses.valueOf(task[3]),
+                        task[4],
+                        task[5],
+                        Integer.parseInt(task[6]),
+                        Integer.parseInt(task[8])
+                );
+            case EPIC:
+                return new Epic(
+                        Integer.parseInt(task[0]),
+                        task[2],
+                        Statuses.valueOf(task[3]),
+                        task[4],
+                        task[5],
+                        Integer.parseInt(task[6])
+                );
+            default:
+                return new Task(
+                        Integer.parseInt(task[0]),
+                        task[2],
+                        Statuses.valueOf(task[3]),
+                        task[4],
+                        task[5],
+                        Integer.parseInt(task[6])
+                );
         }
-        return new Task(Integer.parseInt(task[0]), task[2], Statuses.valueOf(task[3]), task[4]);
     }
 
     protected static String historyToString(HistoryManager manager) {
@@ -62,6 +95,6 @@ public class CSVFormat {
     }
 
     protected String defaultFormat() {
-        return "id,type,name,status,description,epic\n";
+        return "id,type,name,status,description,startTime,duration,endTime,epicId\n";
     }
 }

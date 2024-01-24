@@ -94,7 +94,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     private void save() {
-        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(CSVFormat.getFILE()))) {
+        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(fileName))) {
             bufferedWriter.write(csvFormat.defaultFormat());
             for (Task task : getTasks()) {
                 bufferedWriter.write(csvFormat.toString(task) + '\n');
@@ -128,7 +128,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
             }
             final Task task = fromString(lines.get(i));
             tasks.put(task.getId(), task);
-            if (maxId < task.getId()){
+            if (maxId < task.getId()) {
                 maxId = task.getId();
             }
 
@@ -137,6 +137,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                 case SUBTASK:
                     fileBackedTasksManager.subtasks.put(task.getId(), (Subtask) task);
                     fileBackedTasksManager.epics.get(((Subtask) task).getEpicId()).addSubTasksId(task.getId());
+                    fileBackedTasksManager.epics.get(((Subtask) task).getEpicId()).addSubtaskStartTime(task.getStartTime());
                     break;
                 case EPIC:
                     fileBackedTasksManager.epics.put(task.getId(), (Epic) task);

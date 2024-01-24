@@ -4,7 +4,10 @@ import Tasks.Epic;
 import Tasks.Subtask;
 import Tasks.Task;
 
+import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public interface TaskManager {
     List<Task> getHistory();
@@ -45,5 +48,6 @@ public interface TaskManager {
     void deleteSubtaskById(int id);
 
     List<Subtask> getEpicSubtasksById(int epicId);
+    Set<Task> getPrioritizedTasks();
 
 }

@@ -1,7 +1,0 @@
-id,type,name,status,description,epic
-1,TASK,Task1-1,NEW,Первая таска
-2,EPIC,Epic1-1,NEW,Первый эпик
-4,EPIC,Epic1-2,NEW,Второй эпик
-3,SUBTASK,Подзадача1-1-1,NEW,Первая подзадача первого эпика,2
-
-3,2
