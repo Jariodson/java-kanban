@@ -39,13 +39,13 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
-    void getHistory() {
+    void getHistoryShouldReturnHistoryTest() {
         final HistoryManager inMemoryHistoryManager = Managers.getDefaultHistory();
         assertEquals(java.util.Collections.emptyList(), inMemoryHistoryManager.getHistory());
     }
 
     @Test
-    void getTasks() {
+    void getTasksShouldReturnTasksTest() {
         assertNotNull(taskManager.getTasks(), "Список задач пуст.");
         assertEquals(List.of(task1Id, task2Id), taskManager.getTasks().stream()
                 .map(Task::getId)
@@ -54,7 +54,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
-    void getEpics() {
+    void getEpicsShouldReturnEpicsTest() {
         assertNotNull(taskManager.getEpics(), "Список эпиков пуст.");
         assertEquals(List.of(epic1Id, epic2Id), taskManager.getEpics().stream()
                 .map(Epic::getId)
@@ -63,7 +63,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
-    void getSubtasks() {
+    void getSubtasksShouldReturnSubtasksTest() {
         assertNotNull(taskManager.getTasks(), "Список сабтасков пуст.");
         assertEquals(List.of(subtask1Id, subtask2Id), taskManager.getSubtasks().stream()
                 .map(Subtask::getId)
@@ -72,44 +72,44 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
-    void deleteTasks() {
+    void deleteTasksShouldDeleteTasksTest() {
         taskManager.deleteTasks();
         assertEquals(java.util.Collections.emptyList(), taskManager.getTasks());
     }
 
     @Test
-    void deleteEpics() {
+    void deleteEpicsShouldDeleteEpicsTest() {
         taskManager.deleteEpics();
         assertEquals(java.util.Collections.emptyList(), taskManager.getEpics());
     }
 
     @Test
-    void deleteSubtasks() {
+    void deleteSubtasksShouldDeleteSubtasksTest() {
         taskManager.deleteSubtasks();
         assertEquals(java.util.Collections.emptyList(), taskManager.getSubtasks());
     }
 
     @Test
-    void getTaskById() {
+    void getTaskByIdShouldReturnTaskIfTaskIdIsExistTest() {
         assertNotNull(taskManager.getTaskById(task1Id));
         assertEquals(task1, taskManager.getTaskById(task1Id));
     }
 
     @Test
-    void getEpicById() {
+    void getEpicByIdShouldReturnEpicIfEpicIdIsExistTest() {
         assertNotNull(taskManager.getEpicById(epic1Id));
         assertEquals(epic1, taskManager.getEpicById(epic1Id));
     }
 
     @Test
-    void getSubtaskById() {
+    void getSubtaskByIdShouldReturnSubtaskIfSubtaskIdIsExistTest() {
         assertNotNull(taskManager.getSubtaskById(subtask1Id));
         assertNotNull(taskManager.getEpicById(taskManager.getSubtaskById(subtask1Id).getEpicId()));
         assertEquals(subtask1, taskManager.getSubtaskById(subtask1Id));
     }
 
     @Test
-    void createTask() {
+    void createTaskShouldReturnNewTaskTest() {
         Task newTask = new Task("NewTask", "Discription", Statuses.NEW);
         final int taskId = taskManager.createTask(newTask);
         final Task savedTask = taskManager.getTaskById(taskId);
@@ -125,7 +125,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
-    void createEpic() {
+    void createEpicShouldReturnNewEpicTest() {
         Epic newEpic = new Epic("NewEpic", "Discription", Statuses.NEW);
         final int epicId = taskManager.createEpic(newEpic);
         final Epic savedEpic = taskManager.getEpicById(epicId);
@@ -140,7 +140,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
-    void createSubtask() {
+    void createSubtaskShouldReturnNewSubtaskTest() {
         Subtask newSubtask = new Subtask("NewSubtask", "Discriprion", Statuses.NEW, epic1Id);
         final int subtaskId = taskManager.createSubtask(newSubtask);
         final Subtask savedSubtask = taskManager.getSubtaskById(subtaskId);
@@ -157,36 +157,36 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
-    void updateTask() {
+    void updateTaskShouldReturnNewTaskAfterUpdateTest() {
     }
 
     @Test
-    void updateEpic() {
+    void updateEpicShouldReturnNewEpicAfterUpdateTest() {
     }
 
     @Test
-    void updateSubtask() {
+    void updateSubtaskShouldReturnNewSubtaskAfterUpdateTest() {
     }
 
     @Test
-    void deleteTaskById() {
+    void deleteTaskByIdShouldReturnFalseIfTaskAfterDeleteIsExistTest() {
         taskManager.deleteTaskById(task1Id);
         Assertions.assertFalse(taskManager.getTasks().contains(task1));
     }
 
     @Test
-    void deleteEpicById() {
+    void deleteEpicByIdShouldReturnFalseIfEpicAfterDeleteIsExistTest() {
         taskManager.deleteEpicById(epic1Id);
         Assertions.assertFalse(taskManager.getEpics().contains(epic1));
     }
 
     @Test
-    void deleteSubtaskById() {
+    void deleteSubtaskByIdShouldReturnFalseIfSubtaskAfterDeleteIsExistTest() {
         taskManager.deleteSubtaskById(subtask1Id);
         Assertions.assertFalse(taskManager.getSubtasks().contains(subtask1));
     }
 
     @Test
-    void getEpicSubtasksById() {
+    void getEpicSubtasksByIdShouldReturnAllIdsOfEpicsSubtasksTest() {
     }
 }

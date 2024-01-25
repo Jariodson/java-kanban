@@ -5,23 +5,22 @@ import Tasks.*;
 import Tasks.Enums.Statuses;
 import Tasks.Enums.TaskTypes;
 
-import java.io.File;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class CSVFormat {
 
     public String toString(Task task) {
-        if (task.getClassType().equals(TaskTypes.SUBTASK)) {
+        if (task.getClassType() == TaskTypes.SUBTASK) {
             return String.join(",", task.getId().toString(),
                     task.getClassType().toString(),
                     task.getName(),
                     task.getStatus().toString(),
                     task.getDescription(),
-                    task.getStartTime(),
+                    Objects.requireNonNullElse(task.getStartTime(), "null").toString(),
                     task.getDuration().toString(),
-                    task.getEndTime(),
+                    Objects.requireNonNullElse(task.getEndTime(), "null").toString(),
                     ((Subtask) task).getEpicId().toString()
             );
         } else {
@@ -30,9 +29,9 @@ public class CSVFormat {
                     task.getName(),
                     task.getStatus().toString(),
                     task.getDescription(),
-                    task.getStartTime(),
+                    Objects.requireNonNullElse(task.getStartTime(), "null").toString(),
                     task.getDuration().toString(),
-                    task.getEndTime()
+                    Objects.requireNonNullElse(task.getEndTime(), "null").toString()
             );
         }
     }

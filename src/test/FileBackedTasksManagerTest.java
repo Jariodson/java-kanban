@@ -21,7 +21,7 @@ public class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksM
     }
 
     @Test
-    void loadFromFileWhenFileIsEmpty() {
+    void loadFromFileShouldThrowExceptionWhenFileIsEmptyTest() {
         Assertions.assertTrue(nameOfFile.delete());
         taskManager = new FileBackedTasksManager(nameOfFile);
         ManagerSaveException ex = Assertions.assertThrows(ManagerSaveException.class,
@@ -30,7 +30,7 @@ public class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksM
     }
 
     @Test
-    void loadFromFileWhenListOfEpicsWithoutSubtasks() {
+    void loadFromFileShouldReturnEpicSubtasksIdsFromFileWhenListOfEpicsIsWithoutSubtasksTest() {
         Assertions.assertTrue(nameOfFile.delete());
         taskManager = new FileBackedTasksManager(nameOfFile);
         int epic1Id = taskManager.createEpic(new Epic("Epic1", "Описание эпика", Statuses.NEW));
@@ -41,7 +41,7 @@ public class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksM
     }
 
     @Test
-    void loadFromFileWhenListOfHistoryIsEmpty() {
+    void loadFromFileShouldReturnEmptyHistoryFromFileWhenListOfHistoryIsEmptyTest() {
         Assertions.assertTrue(nameOfFile.delete());
         taskManager = new FileBackedTasksManager(nameOfFile);
         int epic1Id = taskManager.createEpic(new Epic("Epic1", "Описание эпика", Statuses.NEW));

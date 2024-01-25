@@ -5,6 +5,8 @@ import Tasks.Enums.TaskTypes;
 
 import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
+import java.util.Optional;
 
 public class Task {
     protected String name;
@@ -33,7 +35,7 @@ public class Task {
         if (startTime.equals("null"))
             this.startTime = null;
         else
-            this.startTime = ZonedDateTime.parse(startTime, formatter);
+            this.startTime = LocalDateTime.parse(startTime).atZone(zoneId);
         this.duration = duration;
     }
 
@@ -41,12 +43,6 @@ public class Task {
         this.name = name;
         this.description = description;
         this.status = status;
-    }
-
-    public String getEndTime() {
-        if (startTime == null)
-            return "null";
-        return startTime.plus(Duration.ofMinutes(duration)).format(formatter);
     }
 
     public TaskTypes getClassType() {
@@ -91,10 +87,16 @@ public class Task {
         return duration;
     }
 
-    public String getStartTime() {
+    public LocalDateTime getStartTime() {
+        if (startTime == null)
+            return null;
+        return startTime.toLocalDateTime();
+    }
+
+    public LocalDateTime getEndTime() {
         if (startTime == null) {
-            return "null";
+            return null;
         }
-        return startTime.format(formatter);
+        return startTime.plus(Duration.ofMinutes(duration)).toLocalDateTime();
     }
 }

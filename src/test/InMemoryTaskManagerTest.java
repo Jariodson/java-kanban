@@ -10,14 +10,15 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager> {
     private Epic epic;
+
     @BeforeEach
-    void beforeEach(){
+    void beforeEach() {
         taskManager = new InMemoryTaskManager();
         initTasks();
     }
 
     @Test
-    void getEpicStatusIfListOfSubtasksEmpty() {
+    void getEpicStatusShouldReturnEpicStatusNewIfListOfSubtasksEmptyTest() {
         taskManager.createEpic(epic = new Epic("Epic", "Описание Эпика", Statuses.NEW));
         assertNotNull(taskManager.getEpics());
         assertEquals(0, epic.getSubTasksId().size());
@@ -25,7 +26,7 @@ class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager> {
     }
 
     @Test
-    void getEpicStatusIfListOfSubtasksWithStatusesNEW() {
+    void getEpicStatusShouldReturnEpicStatusNewIfListOfSubtasksWithStatusesNewTest() {
         taskManager.createEpic(epic = new Epic("Epic", "Описание Эпика", Statuses.NEW));
         taskManager.createSubtask(new Subtask("Subtask1", "Описание 1-го сабтаска", Statuses.NEW, epic.getId()));
         taskManager.createSubtask(new Subtask("Subtask2", "Описание 2-го сабтаска", Statuses.NEW, epic.getId()));
@@ -33,7 +34,7 @@ class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager> {
     }
 
     @Test
-    void getEpicStatusIfListOfSubtasksWithStatusesDone(){
+    void getEpicStatusShouldReturnEpicStatusDoneIfListOfSubtasksWithStatusesDoneTest() {
         taskManager.createEpic(epic = new Epic("Epic", "Описание Эпика", Statuses.NEW));
         taskManager.createSubtask(new Subtask("Subtask1", "Описание 1-го сабтаска", Statuses.DONE, epic.getId()));
         taskManager.createSubtask(new Subtask("Subtask2", "Описание 2-го сабтаска", Statuses.DONE, epic.getId()));
@@ -41,7 +42,7 @@ class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager> {
     }
 
     @Test
-    void getEpicStatusIfListOfSubtasksWithStatusesNewAndDone(){
+    void getEpicStatusShouldReturnEpicStatusInProgressIfListOfSubtasksWithStatusesNewAndDone() {
         taskManager.createEpic(epic = new Epic("Epic", "Описание Эпика", Statuses.NEW));
         taskManager.createSubtask(new Subtask("Subtask1", "Описание 1-го сабтаска", Statuses.NEW, epic.getId()));
         taskManager.createSubtask(new Subtask("Subtask2", "Описание 2-го сабтаска", Statuses.DONE, epic.getId()));
@@ -49,7 +50,7 @@ class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager> {
     }
 
     @Test
-    void getEpicStatusIfListOfSubtasksWithStatusesInProgress(){
+    void getEpicStatusShouldReturnEpicStatusInProgressIfListOfSubtasksStatusesEqualsToEpicStatusInProgressTest() {
         taskManager.createEpic(epic = new Epic("Epic", "Описание Эпика", Statuses.NEW));
         taskManager.createSubtask(new Subtask("Subtask1", "Описание 1-го сабтаска", Statuses.IN_PROGRESS, epic.getId()));
         taskManager.createSubtask(new Subtask("Subtask2", "Описание 2-го сабтаска", Statuses.IN_PROGRESS, epic.getId()));

@@ -10,12 +10,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
-import java.time.format.DateTimeFormatter;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TimeTest {
     private TaskManager taskManager;
     private final static File nameOfFile = new File("resources/testTasks.csv");
-    private final static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy;HH:mm");
 
     @BeforeEach
     void beforeEach() {
@@ -23,7 +23,7 @@ public class TimeTest {
     }
 
     @Test
-    void createNewTasks() {
+    void testShouldReturnNewTasksWithPriorByStartTimeFromPrioritizedList() {
         int task1Id = taskManager.createTask(new Task("Task1", "Описание таски",
                 Statuses.NEW, 20, "23.01.2024;16:04"));
 
@@ -42,13 +42,13 @@ public class TimeTest {
     }
 
     @Test
-    void createEpicWithoutSubtasks() {
+    void testShouldReturnEpicEndTimeIfListOfEpicSubtasksIsEmpty() { //createEpicWithoutSubtasks
         int epic1Id = taskManager.createEpic(new Epic("Epic1", "Описание эпика", Statuses.NEW));
         System.out.println(taskManager.getEpicById(epic1Id).getEndTime());
     }
 
     @Test
-    void createEpicWithSubtasks() {
+    void testShouldReturnEpicEndTimeIfEpicHaveSubtasks() {
         int epic1Id = taskManager.createEpic(new Epic("Epic1", "Описание эпика", Statuses.NEW));
         int subtask1Id = taskManager.createSubtask(
                 new Subtask("Subtask1", "Описание сабтаски", Statuses.NEW, epic1Id,
@@ -62,7 +62,7 @@ public class TimeTest {
     }
 
     @Test
-    void getPrioritizedTasks(){
+    void testShouldReturnPrioritizedTasksFromFile() {
         int task1Id = taskManager.createTask(new Task("Task1", "Описание таски",
                 Statuses.NEW, 20, "23.01.2024;16:04"));
         int task3Id = taskManager.createTask(new Task("Task3", "Описание таски",
@@ -76,5 +76,32 @@ public class TimeTest {
                 new Subtask("Subtask2", "Описание сабтаски", Statuses.IN_PROGRESS, epic1Id,
                         20, "23.01.2024;17:04")
         );
+        for (Task task : taskManager.getPrioritizedTasks()) {
+            System.out.println(task);
+        }
+    }
+
+    @Test
+    void getPrioritizeFromFiledTest() {
+        assertTrue(nameOfFile.delete());
+        int task1Id = taskManager.createTask(new Task("Task1", "Описание таски",
+                Statuses.NEW, 20, "23.01.2024;16:04"));
+        int task3Id = taskManager.createTask(new Task("Task3", "Описание таски",
+                Statuses.NEW));
+        int epic1Id = taskManager.createEpic(new Epic("Epic1", "Описание эпика", Statuses.NEW));
+        int subtask1Id = taskManager.createSubtask(
+                new Subtask("Subtask1", "Описание сабтаски", Statuses.NEW, epic1Id,
+                        10, "23.01.2024;16:25")
+        );
+        int subtask2Id = taskManager.createSubtask(
+                new Subtask("Subtask2", "Описание сабтаски", Statuses.IN_PROGRESS, epic1Id,
+                        20, "23.01.2024;17:04")
+        );
+        taskManager.getEpicById(epic1Id);
+        taskManager.getSubtaskById(subtask1Id);
+        FileBackedTasksManager fileBackedTasksManager = FileBackedTasksManager.loadFromFile(nameOfFile);
+        for (Task task : fileBackedTasksManager.getPrioritizedTasks()) {
+            System.out.println(task);
+        }
     }
 }

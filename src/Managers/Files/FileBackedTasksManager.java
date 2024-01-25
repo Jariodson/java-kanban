@@ -137,13 +137,14 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                 case SUBTASK:
                     fileBackedTasksManager.subtasks.put(task.getId(), (Subtask) task);
                     fileBackedTasksManager.epics.get(((Subtask) task).getEpicId()).addSubTasksId(task.getId());
-                    fileBackedTasksManager.epics.get(((Subtask) task).getEpicId()).addSubtaskStartTime(task.getStartTime());
+                    fileBackedTasksManager.prioritizedTasks.add(task);
                     break;
                 case EPIC:
                     fileBackedTasksManager.epics.put(task.getId(), (Epic) task);
                     break;
                 default:
                     fileBackedTasksManager.tasks.put(task.getId(), task);
+                    fileBackedTasksManager.prioritizedTasks.add(task);
                     break;
             }
         }

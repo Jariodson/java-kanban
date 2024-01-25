@@ -23,7 +23,7 @@ class HistoryManagerTest {
     }
 
     @Test
-    void add() {
+    void addShouldAddTaskToHistoryListTest() {
         NullPointerException ex = Assertions.assertThrows(NullPointerException.class,
                 () -> historyManager.add(null));
         assertEquals("Пустая задача.", ex.getMessage());
@@ -38,7 +38,7 @@ class HistoryManagerTest {
     }
 
     @Test
-    void remove() {
+    void removeShouldRemoveTaskFromHistoryTest() {
         Epic epic1 = new Epic("Epic1", "Описание эпика", Statuses.NEW);
         Epic epic2 = new Epic("Epic2", "Описание эпика", Statuses.NEW);
         epic1.setId(2);
@@ -67,7 +67,7 @@ class HistoryManagerTest {
     }
 
     @Test
-    void getHistory() {
+    void getHistoryShouldReturnHistoryListTest() {
         historyManager.add(task);
         assertNotNull(historyManager.getHistory());
         assertEquals(1, historyManager.getHistory().size());

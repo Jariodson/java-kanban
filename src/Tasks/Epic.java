@@ -21,21 +21,9 @@ public class Epic extends Task {
         subTasksIds = new ArrayList<>();
     }
 
-    public void setStartTime(String startTime) {
-        if (startTime.equals("null"))
-            return;
-        this.startTime = LocalDateTime.parse(startTime, formatter).atZone(zoneId);
-    }
-
     @Override
     public TaskTypes getClassType() {
         return type;
-    }
-
-    public void setEndTime(String endTime) {
-        if (endTime.equals("null"))
-            return;
-        this.endTime = LocalDateTime.parse(endTime, formatter).atZone(zoneId);
     }
 
     public List<Integer> getSubTasksId() {
@@ -50,9 +38,6 @@ public class Epic extends Task {
         subTasksIds.add(id);
     }
 
-    public void addSubtaskStartTime(String subtaskStartTime) {
-    }
-
     @Override
     public String toString() {
         return "Epic{" +
@@ -65,9 +50,21 @@ public class Epic extends Task {
     }
 
     @Override
-    public String getEndTime() {
+    public LocalDateTime getEndTime() {
         if (endTime == null)
-            return "null";
-        return endTime.format(formatter);
+            return null;
+        return endTime.toLocalDateTime();
+    }
+
+    public void setEndTime(LocalDateTime endTime) {
+        if (endTime == null)
+            return;
+        this.endTime = endTime.atZone(zoneId);
+    }
+
+    public void setStartTime(LocalDateTime startTime) {
+        if (startTime == null)
+            return;
+        this.startTime = startTime.atZone(zoneId);
     }
 }
