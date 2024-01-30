@@ -17,6 +17,19 @@ public class Task {
     protected int duration;
     protected final static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy;HH:mm");
     protected final static ZoneId zoneId = ZoneId.of("Europe/Moscow");
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", id=" + id +
+                ", status=" + status +
+                ", duration=" + duration +
+                ", startTime=" + startTime +
+                '}';
+    }
+
     protected ZonedDateTime startTime;
 
     public Task(String name, String description, Statuses status, int duration, String startTime) {
@@ -32,10 +45,12 @@ public class Task {
         this.description = description;
         this.id = id;
         this.status = status;
-        if (startTime.equals("null"))
+        if (startTime.equals("null")) {
             this.startTime = null;
-        else
-            this.startTime = LocalDateTime.parse(startTime).atZone(zoneId);
+        }
+        else {
+            this.startTime = LocalDateTime.parse(startTime, formatter).atZone(zoneId);
+        }
         this.duration = duration;
     }
 
@@ -55,16 +70,6 @@ public class Task {
 
     public String getDescription() {
         return description;
-    }
-
-    @Override
-    public String toString() {
-        return "Task{" +
-                "name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", id=" + id +
-                ", status=" + status +
-                '}';
     }
 
     public void setId(int id) {

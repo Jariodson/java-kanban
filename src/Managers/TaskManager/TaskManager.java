@@ -4,9 +4,7 @@ import Tasks.Epic;
 import Tasks.Subtask;
 import Tasks.Task;
 
-import java.time.ZonedDateTime;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 public interface TaskManager {
@@ -49,5 +47,4 @@ public interface TaskManager {
 
     List<Subtask> getEpicSubtasksById(int epicId);
     Set<Task> getPrioritizedTasks();
-
 }

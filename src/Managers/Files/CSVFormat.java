@@ -5,11 +5,14 @@ import Tasks.*;
 import Tasks.Enums.Statuses;
 import Tasks.Enums.TaskTypes;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class CSVFormat {
+    private final static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy;HH:mm");
 
     public String toString(Task task) {
         if (task.getClassType() == TaskTypes.SUBTASK) {
@@ -18,9 +21,9 @@ public class CSVFormat {
                     task.getName(),
                     task.getStatus().toString(),
                     task.getDescription(),
-                    Objects.requireNonNullElse(task.getStartTime(), "null").toString(),
+                    timeToString(task.getStartTime()),
                     task.getDuration().toString(),
-                    Objects.requireNonNullElse(task.getEndTime(), "null").toString(),
+                    timeToString(task.getEndTime()),
                     ((Subtask) task).getEpicId().toString()
             );
         } else {
@@ -29,9 +32,9 @@ public class CSVFormat {
                     task.getName(),
                     task.getStatus().toString(),
                     task.getDescription(),
-                    Objects.requireNonNullElse(task.getStartTime(), "null").toString(),
+                    timeToString(task.getStartTime()),
                     task.getDuration().toString(),
-                    Objects.requireNonNullElse(task.getEndTime(), "null").toString()
+                    timeToString(task.getEndTime())
             );
         }
     }
@@ -91,6 +94,14 @@ public class CSVFormat {
             idsList.add(Integer.parseInt(id));
         }
         return idsList;
+    }
+
+    private String timeToString(LocalDateTime localDateTime){
+        if (localDateTime == null){
+            return "null";
+        }else {
+            return localDateTime.format(formatter);
+        }
     }
 
     protected String defaultFormat() {

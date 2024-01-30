@@ -220,13 +220,14 @@ public class InMemoryTaskManager implements TaskManager {
         }
         LocalDateTime localDateTimeTaskStartTime = task.getStartTime();
         LocalDateTime localDateTimeTaskEndTime = task.getEndTime();
+        if (task.getClassType() == TaskTypes.EPIC) {
+            prioritizedTasks.add(task);
+            return;
+        }
         for (Task task1 : prioritizedTasks) {
-            if (task.getClassType() == TaskTypes.EPIC) {
-                prioritizedTasks.add(task);
-                return;
-            }
-            if (task1.getClassType() == TaskTypes.EPIC)
+            if (task1.getClassType() == TaskTypes.EPIC) {
                 continue;
+            }
             LocalDateTime localDateTimeStartTimeInTasks = task1.getStartTime();
             LocalDateTime localDateTimeTaskEndTimeInTasks = task1.getEndTime();
             if (localDateTimeTaskEndTime.isBefore(localDateTimeStartTimeInTasks)) { //если задача закончена до начала другой
