@@ -1,7 +1,7 @@
 import Managers.HistoryManager.HistoryManager;
 import Managers.Managers;
 import Managers.TaskManager.TaskManager;
-import Tasks.Enums.Statuses;
+import Tasks.Enums.Status;
 import Tasks.Epic;
 import Tasks.Subtask;
 import Tasks.Task;
@@ -19,23 +19,22 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     protected Task task1;
     protected Epic epic1;
     protected Subtask subtask1;
-
+    int epic2Id;
     private int task1Id;
     private int task2Id;
     private int epic1Id;
-    int epic2Id;
     private int subtask1Id;
     private int subtask2Id;
 
     protected void initTasks() {
-        task1Id = taskManager.createTask(task1 = new Task("Task1", "Описание таски", Statuses.NEW));
-        task2Id = taskManager.createTask(new Task("Task2", "Описание таски", Statuses.NEW));
+        task1Id = taskManager.createTask(task1 = new Task("Task1", "Описание таски", Status.NEW));
+        task2Id = taskManager.createTask(new Task("Task2", "Описание таски", Status.NEW));
 
-        epic1Id = taskManager.createEpic(epic1 = new Epic("Epic1", "Описание эпика", Statuses.NEW));
-        epic2Id = taskManager.createEpic(new Epic("Epic2", "Описание эпика", Statuses.NEW));
+        epic1Id = taskManager.createEpic(epic1 = new Epic("Epic1", "Описание эпика", Status.NEW));
+        epic2Id = taskManager.createEpic(new Epic("Epic2", "Описание эпика", Status.NEW));
 
-        subtask1Id = taskManager.createSubtask(subtask1 = new Subtask("Subtask1", "Описание сабтаски", Statuses.NEW, epic1Id));
-        subtask2Id = taskManager.createSubtask(new Subtask("Subtask2", "Описание сабтаски", Statuses.NEW, epic1Id));
+        subtask1Id = taskManager.createSubtask(subtask1 = new Subtask("Subtask1", "Описание сабтаски", Status.NEW, epic1Id));
+        subtask2Id = taskManager.createSubtask(new Subtask("Subtask2", "Описание сабтаски", Status.NEW, epic1Id));
     }
 
     @Test
@@ -110,7 +109,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
 
     @Test
     void createTaskShouldReturnNewTaskTest() {
-        Task newTask = new Task("NewTask", "Discription", Statuses.NEW);
+        Task newTask = new Task("NewTask", "Discription", Status.NEW);
         final int taskId = taskManager.createTask(newTask);
         final Task savedTask = taskManager.getTaskById(taskId);
 
@@ -126,7 +125,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
 
     @Test
     void createEpicShouldReturnNewEpicTest() {
-        Epic newEpic = new Epic("NewEpic", "Discription", Statuses.NEW);
+        Epic newEpic = new Epic("NewEpic", "Discription", Status.NEW);
         final int epicId = taskManager.createEpic(newEpic);
         final Epic savedEpic = taskManager.getEpicById(epicId);
 
@@ -141,7 +140,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
 
     @Test
     void createSubtaskShouldReturnNewSubtaskTest() {
-        Subtask newSubtask = new Subtask("NewSubtask", "Discriprion", Statuses.NEW, epic1Id);
+        Subtask newSubtask = new Subtask("NewSubtask", "Discriprion", Status.NEW, epic1Id);
         final int subtaskId = taskManager.createSubtask(newSubtask);
         final Subtask savedSubtask = taskManager.getSubtaskById(subtaskId);
 
@@ -158,10 +157,20 @@ public abstract class TaskManagerTest<T extends TaskManager> {
 
     @Test
     void updateTaskShouldReturnNewTaskAfterUpdateTest() {
+        System.out.println(taskManager.getTasks());
+        task1.setStatus(Status.IN_PROGRESS);
+        taskManager.updateTask(task1);
+        System.out.println("Обновление задачи");
+        System.out.println(taskManager.getTasks());
     }
 
     @Test
     void updateEpicShouldReturnNewEpicAfterUpdateTest() {
+        System.out.println(taskManager.getEpics());
+        epic1.setStatus(Status.DONE);
+        taskManager.updateEpic(epic1);
+        System.out.println("Обновление эпика");
+        System.out.println(taskManager.getEpics());
     }
 
     @Test

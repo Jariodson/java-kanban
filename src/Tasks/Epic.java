@@ -1,28 +1,30 @@
 package Tasks;
 
-import Tasks.Enums.Statuses;
-import Tasks.Enums.TaskTypes;
+import Tasks.Enums.Status;
+import Tasks.Enums.TaskType;
 
-import java.time.*;
-import java.util.*;
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Epic extends Task {
+    private static final TaskType type = TaskType.EPIC;
     private final List<Integer> subTasksIds;
-    private static final TaskTypes type = TaskTypes.EPIC;
     private ZonedDateTime endTime;
 
-    public Epic(String name, String description, Statuses status) {
+    public Epic(String name, String description, Status status) {
         super(name, description, status);
         subTasksIds = new ArrayList<>();
     }
 
-    public Epic(Integer id, String name, Statuses status, String description, String startTime, int duration) {
+    public Epic(Integer id, String name, Status status, String description, String startTime, int duration) {
         super(id, name, status, description, startTime, duration);
         subTasksIds = new ArrayList<>();
     }
 
     @Override
-    public TaskTypes getClassType() {
+    public TaskType getClassType() {
         return type;
     }
 

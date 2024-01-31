@@ -11,11 +11,13 @@ import java.net.http.HttpResponse;
 public class KVTaskClient {
     private final String url;
     private final String apiToken;
+
     public KVTaskClient(int port) {
         url = "http://localhost:" + port + "/";
         apiToken = register(url);
     }
-    private String register(String url){
+
+    private String register(String url) {
         try {
             HttpClient client = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder()
@@ -23,15 +25,16 @@ public class KVTaskClient {
                     .GET()
                     .build();
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            if (response.statusCode() != 200){
+            if (response.statusCode() != 200) {
                 throw new ManagerSaveException("Ошибка ответа. Код ответа: " + response.statusCode());
             }
             return response.body();
-        }catch (IOException | InterruptedException ex){
+        } catch (IOException | InterruptedException ex) {
             throw new ManagerSaveException("Ошибка отпраки запроса или обработки ответа");
         }
     }
-    public String load(String key){
+
+    public String load(String key) {
         try {
             HttpClient client = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder()
@@ -39,17 +42,17 @@ public class KVTaskClient {
                     .uri(URI.create(url + "load/" + key + "?API_TOKEN=" + apiToken))
                     .build();
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            if (response.statusCode() != 200){
+            if (response.statusCode() != 200) {
                 throw new ManagerSaveException("Ошибка запроса. Код ответа: " + response.statusCode());
             }
             return response.body();
-        }catch (IOException | InterruptedException ex){
-            //throw new ManagerSaveException("Ошибка отпраки запроса или обработки ответа");
+        } catch (IOException | InterruptedException ex) {
             System.out.println(ex.getMessage());
             return null;
         }
     }
-    public void put(String key, String value){
+
+    public void put(String key, String value) {
         try {
             HttpClient client = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder()
@@ -57,10 +60,10 @@ public class KVTaskClient {
                     .POST(HttpRequest.BodyPublishers.ofString(value))
                     .build();
             HttpResponse<Void> response = client.send(request, HttpResponse.BodyHandlers.discarding());
-            if (response.statusCode() != 200){
+            if (response.statusCode() != 200) {
                 throw new ManagerSaveException("Ошибка запроса. Код ответа: " + response.statusCode());
             }
-        }catch (IOException | InterruptedException ex){
+        } catch (IOException | InterruptedException ex) {
             throw new ManagerSaveException("Ошибка отпраки запроса или обработки ответа");
         }
     }

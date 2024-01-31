@@ -14,11 +14,12 @@ import java.util.Locale;
 public class ZonedDateTimeAdapter extends TypeAdapter<ZonedDateTime> {
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy;HH:mm", Locale.ENGLISH);
     private final static ZoneId zoneId = ZoneId.of("Europe/Moscow");
+
     @Override
     public void write(JsonWriter out, ZonedDateTime value) throws IOException {
-        if (value != null){
+        if (value != null) {
             out.value(value.format(DATE_TIME_FORMATTER));
-        }else {
+        } else {
             out.value("null");
         }
 

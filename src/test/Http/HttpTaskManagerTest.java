@@ -5,7 +5,7 @@ import Managers.Http.HttpTaskManager;
 import Managers.Http.HttpTaskServer;
 import Managers.Managers;
 import Managers.TaskManager.TaskManager;
-import Tasks.Enums.Statuses;
+import Tasks.Enums.Status;
 import Tasks.Epic;
 import Tasks.Subtask;
 import Tasks.Task;
@@ -20,8 +20,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class HttpTaskManagerTest {
     private TaskManager taskManager;
@@ -39,10 +38,10 @@ public class HttpTaskManagerTest {
         taskManager = Managers.getDefault();
 
         int task1Id = taskManager.createTask(task = new Task("Task1", "Описание таски",
-                Statuses.NEW, 20, "23.01.2024;15:04"));
-        int epic1Id = taskManager.createEpic(epic = new Epic("Epic1", "Описание эпика", Statuses.NEW));
+                Status.NEW, 20, "23.01.2024;15:04"));
+        int epic1Id = taskManager.createEpic(epic = new Epic("Epic1", "Описание эпика", Status.NEW));
         int subtask1Id = taskManager.createSubtask(
-                subtask = new Subtask("Subtask1", "Описание сабтаски", Statuses.NEW, epic1Id,
+                subtask = new Subtask("Subtask1", "Описание сабтаски", Status.NEW, epic1Id,
                         10, "23.01.2024;16:04")
         );
 
@@ -54,6 +53,25 @@ public class HttpTaskManagerTest {
     void afterEach() {
         server.stop();
         httpTaskServer.stop();
+    }
+
+    @Test
+    void testShouldReturnTasks() throws IOException, InterruptedException {
+        HttpClient client = HttpClient.newHttpClient();
+        URI url = URI.create("http://localhost:8080/tasks/task/");
+        HttpRequest request = HttpRequest.newBuilder().uri(url).GET().build();
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        assertNotNull(response.body());
+        System.out.println(response.body());
+    }
+
+    @Test
+    void testShouldReturnTaskById() throws IOException, InterruptedException {
+        HttpClient client = HttpClient.newHttpClient();
+        URI url = URI.create("http://localhost:8080/tasks/task/?id=1");
+        HttpRequest request = HttpRequest.newBuilder().uri(url).GET().header("Accept", "application/txt").build();
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        System.out.println(response.body());
     }
 
     @Test

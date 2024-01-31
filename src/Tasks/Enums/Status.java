@@ -1,6 +1,6 @@
 package Tasks.Enums;
 
-public enum Statuses {
+public enum Status {
     NEW,
     DONE,
     IN_PROGRESS

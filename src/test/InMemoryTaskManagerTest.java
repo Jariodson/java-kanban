@@ -1,5 +1,5 @@
 import Managers.TaskManager.InMemoryTaskManager;
-import Tasks.Enums.Statuses;
+import Tasks.Enums.Status;
 import Tasks.Epic;
 import Tasks.Subtask;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,41 +19,41 @@ class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager> {
 
     @Test
     void getEpicStatusShouldReturnEpicStatusNewIfListOfSubtasksEmptyTest() {
-        taskManager.createEpic(epic = new Epic("Epic", "Описание Эпика", Statuses.NEW));
+        taskManager.createEpic(epic = new Epic("Epic", "Описание Эпика", Status.NEW));
         assertNotNull(taskManager.getEpics());
         assertEquals(0, epic.getSubTasksId().size());
-        assertEquals(Statuses.NEW, epic.getStatus());
+        assertEquals(Status.NEW, epic.getStatus());
     }
 
     @Test
     void getEpicStatusShouldReturnEpicStatusNewIfListOfSubtasksWithStatusesNewTest() {
-        taskManager.createEpic(epic = new Epic("Epic", "Описание Эпика", Statuses.NEW));
-        taskManager.createSubtask(new Subtask("Subtask1", "Описание 1-го сабтаска", Statuses.NEW, epic.getId()));
-        taskManager.createSubtask(new Subtask("Subtask2", "Описание 2-го сабтаска", Statuses.NEW, epic.getId()));
-        assertEquals(Statuses.NEW, epic.getStatus());
+        taskManager.createEpic(epic = new Epic("Epic", "Описание Эпика", Status.NEW));
+        taskManager.createSubtask(new Subtask("Subtask1", "Описание 1-го сабтаска", Status.NEW, epic.getId()));
+        taskManager.createSubtask(new Subtask("Subtask2", "Описание 2-го сабтаска", Status.NEW, epic.getId()));
+        assertEquals(Status.NEW, epic.getStatus());
     }
 
     @Test
     void getEpicStatusShouldReturnEpicStatusDoneIfListOfSubtasksWithStatusesDoneTest() {
-        taskManager.createEpic(epic = new Epic("Epic", "Описание Эпика", Statuses.NEW));
-        taskManager.createSubtask(new Subtask("Subtask1", "Описание 1-го сабтаска", Statuses.DONE, epic.getId()));
-        taskManager.createSubtask(new Subtask("Subtask2", "Описание 2-го сабтаска", Statuses.DONE, epic.getId()));
-        assertEquals(Statuses.DONE, epic.getStatus());
+        taskManager.createEpic(epic = new Epic("Epic", "Описание Эпика", Status.NEW));
+        taskManager.createSubtask(new Subtask("Subtask1", "Описание 1-го сабтаска", Status.DONE, epic.getId()));
+        taskManager.createSubtask(new Subtask("Subtask2", "Описание 2-го сабтаска", Status.DONE, epic.getId()));
+        assertEquals(Status.DONE, epic.getStatus());
     }
 
     @Test
     void getEpicStatusShouldReturnEpicStatusInProgressIfListOfSubtasksWithStatusesNewAndDone() {
-        taskManager.createEpic(epic = new Epic("Epic", "Описание Эпика", Statuses.NEW));
-        taskManager.createSubtask(new Subtask("Subtask1", "Описание 1-го сабтаска", Statuses.NEW, epic.getId()));
-        taskManager.createSubtask(new Subtask("Subtask2", "Описание 2-го сабтаска", Statuses.DONE, epic.getId()));
-        assertEquals(Statuses.IN_PROGRESS, epic.getStatus());
+        taskManager.createEpic(epic = new Epic("Epic", "Описание Эпика", Status.NEW));
+        taskManager.createSubtask(new Subtask("Subtask1", "Описание 1-го сабтаска", Status.NEW, epic.getId()));
+        taskManager.createSubtask(new Subtask("Subtask2", "Описание 2-го сабтаска", Status.DONE, epic.getId()));
+        assertEquals(Status.IN_PROGRESS, epic.getStatus());
     }
 
     @Test
     void getEpicStatusShouldReturnEpicStatusInProgressIfListOfSubtasksStatusesEqualsToEpicStatusInProgressTest() {
-        taskManager.createEpic(epic = new Epic("Epic", "Описание Эпика", Statuses.NEW));
-        taskManager.createSubtask(new Subtask("Subtask1", "Описание 1-го сабтаска", Statuses.IN_PROGRESS, epic.getId()));
-        taskManager.createSubtask(new Subtask("Subtask2", "Описание 2-го сабтаска", Statuses.IN_PROGRESS, epic.getId()));
-        assertEquals(Statuses.IN_PROGRESS, epic.getStatus());
+        taskManager.createEpic(epic = new Epic("Epic", "Описание Эпика", Status.NEW));
+        taskManager.createSubtask(new Subtask("Subtask1", "Описание 1-го сабтаска", Status.IN_PROGRESS, epic.getId()));
+        taskManager.createSubtask(new Subtask("Subtask2", "Описание 2-го сабтаска", Status.IN_PROGRESS, epic.getId()));
+        assertEquals(Status.IN_PROGRESS, epic.getStatus());
     }
 }

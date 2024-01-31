@@ -2,7 +2,7 @@ package Managers.Http;
 
 import Managers.Files.FileBackedTasksManager;
 import Managers.Managers;
-import Tasks.Enums.TaskTypes;
+import Tasks.Enums.TaskType;
 import Tasks.Epic;
 import Tasks.Subtask;
 import Tasks.Task;
@@ -10,16 +10,13 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 
 public class HttpTaskManager extends FileBackedTasksManager {
     private final Gson gson;
     private final KVTaskClient client;
 
-    public HttpTaskManager(int port){
+    public HttpTaskManager(int port) {
         this(port, false);
     }
 
@@ -27,7 +24,7 @@ public class HttpTaskManager extends FileBackedTasksManager {
         super(null);
         gson = Managers.getGson();
         client = new KVTaskClient(port);
-        if (load){
+        if (load) {
             load();
         }
     }
@@ -52,18 +49,22 @@ public class HttpTaskManager extends FileBackedTasksManager {
             collectionType = new TypeToken<Collection<Epic>>() {
             }.getType();
             Collection<Task> historyList = gson.fromJson(client.load("history"), collectionType);
-            for (Task task : historyList){
+            for (Task task : historyList) {
                 inMemoryHistoryManager.add(task);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println("Ошибка!" + e.getMessage());
         }
     }
 
-    private void addTasks(Collection<? extends Task> tasks){
-        for (Task task : tasks){
-            TaskTypes taskTypes = task.getClassType();
-            switch (taskTypes){
+    private void addTasks(Collection<? extends Task> tasks) {
+        int maxId = 0;
+        for (Task task : tasks) {
+            if (maxId < task.getId()) {
+                maxId = task.getId();
+            }
+            TaskType taskType = task.getClassType();
+            switch (taskType) {
                 case EPIC -> this.epics.put(task.getId(), (Epic) task);
                 case SUBTASK -> {
                     this.subtasks.put(task.getId(), (Subtask) task);
@@ -75,6 +76,7 @@ public class HttpTaskManager extends FileBackedTasksManager {
                     this.prioritizedTasks.add(task);
                 }
             }
+            genId = maxId;
         }
     }
 

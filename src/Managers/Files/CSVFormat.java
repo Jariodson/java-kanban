@@ -1,43 +1,19 @@
 package Managers.Files;
 
 import Managers.HistoryManager.HistoryManager;
-import Tasks.*;
-import Tasks.Enums.Statuses;
-import Tasks.Enums.TaskTypes;
+import Tasks.Enums.Status;
+import Tasks.Enums.TaskType;
+import Tasks.Epic;
+import Tasks.Subtask;
+import Tasks.Task;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class CSVFormat {
     private final static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy;HH:mm");
-
-    public String toString(Task task) {
-        if (task.getClassType() == TaskTypes.SUBTASK) {
-            return String.join(",", task.getId().toString(),
-                    task.getClassType().toString(),
-                    task.getName(),
-                    task.getStatus().toString(),
-                    task.getDescription(),
-                    timeToString(task.getStartTime()),
-                    task.getDuration().toString(),
-                    timeToString(task.getEndTime()),
-                    ((Subtask) task).getEpicId().toString()
-            );
-        } else {
-            return String.join(",", task.getId().toString(),
-                    task.getClassType().toString(),
-                    task.getName(),
-                    task.getStatus().toString(),
-                    task.getDescription(),
-                    timeToString(task.getStartTime()),
-                    task.getDuration().toString(),
-                    timeToString(task.getEndTime())
-            );
-        }
-    }
 
     static Task fromString(String value) {
         String[] task;
@@ -46,13 +22,13 @@ public class CSVFormat {
         } else {
             task = value.split(",");
         }
-        TaskTypes type = TaskTypes.valueOf(task[1]);
+        TaskType type = TaskType.valueOf(task[1]);
         switch (type) {
             case SUBTASK:
                 return new Subtask(
                         Integer.parseInt(task[0]),
                         task[2],
-                        Statuses.valueOf(task[3]),
+                        Status.valueOf(task[3]),
                         task[4],
                         task[5],
                         Integer.parseInt(task[6]),
@@ -62,7 +38,7 @@ public class CSVFormat {
                 return new Epic(
                         Integer.parseInt(task[0]),
                         task[2],
-                        Statuses.valueOf(task[3]),
+                        Status.valueOf(task[3]),
                         task[4],
                         task[5],
                         Integer.parseInt(task[6])
@@ -71,7 +47,7 @@ public class CSVFormat {
                 return new Task(
                         Integer.parseInt(task[0]),
                         task[2],
-                        Statuses.valueOf(task[3]),
+                        Status.valueOf(task[3]),
                         task[4],
                         task[5],
                         Integer.parseInt(task[6])
@@ -96,10 +72,35 @@ public class CSVFormat {
         return idsList;
     }
 
-    private String timeToString(LocalDateTime localDateTime){
-        if (localDateTime == null){
+    public String toString(Task task) {
+        if (task.getClassType() == TaskType.SUBTASK) {
+            return String.join(",", task.getId().toString(),
+                    task.getClassType().toString(),
+                    task.getName(),
+                    task.getStatus().toString(),
+                    task.getDescription(),
+                    timeToString(task.getStartTime()),
+                    task.getDuration().toString(),
+                    timeToString(task.getEndTime()),
+                    ((Subtask) task).getEpicId().toString()
+            );
+        } else {
+            return String.join(",", task.getId().toString(),
+                    task.getClassType().toString(),
+                    task.getName(),
+                    task.getStatus().toString(),
+                    task.getDescription(),
+                    timeToString(task.getStartTime()),
+                    task.getDuration().toString(),
+                    timeToString(task.getEndTime())
+            );
+        }
+    }
+
+    private String timeToString(LocalDateTime localDateTime) {
+        if (localDateTime == null) {
             return "null";
-        }else {
+        } else {
             return localDateTime.format(formatter);
         }
     }

@@ -2,7 +2,10 @@ package Managers.HistoryManager;
 
 import Tasks.Task;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class InMemoryHistoryManager implements HistoryManager {
 
@@ -72,21 +75,21 @@ public class InMemoryHistoryManager implements HistoryManager {
     }
 
     private static class Node {
+        private final Task task;
         private Node next;
         private Node prev;
-        private final Task task;
+
+        public Node(Node next, Node prev, Task task) {
+            this.next = next;
+            this.prev = prev;
+            this.task = task;
+        }
 
         @Override
         public String toString() {
             return "Node{" +
                     "task=" + task.getId() +
                     '}';
-        }
-
-        public Node(Node next, Node prev, Task task) {
-            this.next = next;
-            this.prev = prev;
-            this.task = task;
         }
     }
 }

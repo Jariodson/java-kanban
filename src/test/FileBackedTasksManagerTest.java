@@ -1,8 +1,7 @@
 import Managers.Exceptions.ManagerSaveException;
 import Managers.Files.FileBackedTasksManager;
-import Tasks.Enums.Statuses;
+import Tasks.Enums.Status;
 import Tasks.Epic;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,8 +32,8 @@ public class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksM
     void loadFromFileShouldReturnEpicSubtasksIdsFromFileWhenListOfEpicsIsWithoutSubtasksTest() {
         Assertions.assertTrue(nameOfFile.delete());
         taskManager = new FileBackedTasksManager(nameOfFile);
-        int epic1Id = taskManager.createEpic(new Epic("Epic1", "Описание эпика", Statuses.NEW));
-        int epic2Id = taskManager.createEpic(new Epic("Epic2", "Описание эпика", Statuses.NEW));
+        int epic1Id = taskManager.createEpic(new Epic("Epic1", "Описание эпика", Status.NEW));
+        int epic2Id = taskManager.createEpic(new Epic("Epic2", "Описание эпика", Status.NEW));
         FileBackedTasksManager fileBackedTasksManager = FileBackedTasksManager.loadFromFile(nameOfFile);
         assertEquals(0, taskManager.getEpicById(epic1Id).getSubTasksId().size());
         assertEquals(0, taskManager.getEpicById(epic2Id).getSubTasksId().size());
@@ -44,7 +43,7 @@ public class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksM
     void loadFromFileShouldReturnEmptyHistoryFromFileWhenListOfHistoryIsEmptyTest() {
         Assertions.assertTrue(nameOfFile.delete());
         taskManager = new FileBackedTasksManager(nameOfFile);
-        int epic1Id = taskManager.createEpic(new Epic("Epic1", "Описание эпика", Statuses.NEW));
+        int epic1Id = taskManager.createEpic(new Epic("Epic1", "Описание эпика", Status.NEW));
         FileBackedTasksManager fileBackedTasksManager = FileBackedTasksManager.loadFromFile(nameOfFile);
         assertEquals(0, fileBackedTasksManager.getHistory().size());
     }

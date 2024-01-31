@@ -9,6 +9,7 @@ import java.util.Set;
 
 public interface TaskManager {
     List<Task> getHistory();
+
     List<Task> getTasks();
 
     List<Epic> getEpics();
@@ -46,5 +47,6 @@ public interface TaskManager {
     void deleteSubtaskById(int id);
 
     List<Subtask> getEpicSubtasksById(int epicId);
+
     Set<Task> getPrioritizedTasks();
 }

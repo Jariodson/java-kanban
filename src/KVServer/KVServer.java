@@ -27,6 +27,10 @@ public class KVServer {
         server.createContext("/load", this::load);
     }
 
+    public static void main(String[] args) throws IOException {
+        new KVServer().start();
+    }
+
     private void load(HttpExchange h) throws IOException {
         try (h) {
             System.out.println("\n/load");
@@ -104,7 +108,8 @@ public class KVServer {
         System.out.println("API_TOKEN: " + apiToken);
         server.start();
     }
-    public void stop(){
+
+    public void stop() {
         System.out.println("Остановка сервера");
         server.stop(0);
     }
@@ -127,9 +132,5 @@ public class KVServer {
         h.getResponseHeaders().add("Content-Type", "application/json");
         h.sendResponseHeaders(200, resp.length);
         h.getResponseBody().write(resp);
-    }
-
-    public static void main(String[] args) throws IOException {
-        new KVServer().start();
     }
 }

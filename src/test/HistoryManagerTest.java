@@ -1,6 +1,6 @@
 import Managers.HistoryManager.HistoryManager;
 import Managers.Managers;
-import Tasks.Enums.Statuses;
+import Tasks.Enums.Status;
 import Tasks.Epic;
 import Tasks.Task;
 import org.junit.jupiter.api.Assertions;
@@ -9,7 +9,8 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class HistoryManagerTest {
     private HistoryManager historyManager;
@@ -18,7 +19,7 @@ class HistoryManagerTest {
     @BeforeEach
     void beforeEach() {
         historyManager = Managers.getDefaultHistory();
-        task = new Task("Task1", "Discription", Statuses.NEW);
+        task = new Task("Task1", "Discription", Status.NEW);
         task.setId(1);
     }
 
@@ -39,8 +40,8 @@ class HistoryManagerTest {
 
     @Test
     void removeShouldRemoveTaskFromHistoryTest() {
-        Epic epic1 = new Epic("Epic1", "Описание эпика", Statuses.NEW);
-        Epic epic2 = new Epic("Epic2", "Описание эпика", Statuses.NEW);
+        Epic epic1 = new Epic("Epic1", "Описание эпика", Status.NEW);
+        Epic epic2 = new Epic("Epic2", "Описание эпика", Status.NEW);
         epic1.setId(2);
         epic2.setId(3);
 

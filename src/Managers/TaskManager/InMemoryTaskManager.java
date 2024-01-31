@@ -2,13 +2,13 @@ package Managers.TaskManager;
 
 import Managers.HistoryManager.HistoryManager;
 import Managers.Managers;
-import Tasks.Enums.TaskTypes;
+import Tasks.Enums.Status;
+import Tasks.Enums.TaskType;
 import Tasks.Epic;
-import Tasks.Enums.Statuses;
 import Tasks.Subtask;
 import Tasks.Task;
 
-import java.time.*;
+import java.time.LocalDateTime;
 import java.util.*;
 
 public class InMemoryTaskManager implements TaskManager {
@@ -69,7 +69,7 @@ public class InMemoryTaskManager implements TaskManager {
         subtasks.clear();
         for (Epic epic : epics.values()) {
             epic.getSubTasksId().clear();
-            epic.setStatus(Statuses.NEW);
+            epic.setStatus(Status.NEW);
         }
     }
 
@@ -134,7 +134,6 @@ public class InMemoryTaskManager implements TaskManager {
     public void updateEpic(Epic epic) {
         if (epics.containsKey(epic.getId())) {
             epics.put(epic.getId(), epic);
-            addToPrioritizedTasks(epic);
         }
 
     }
@@ -220,12 +219,12 @@ public class InMemoryTaskManager implements TaskManager {
         }
         LocalDateTime localDateTimeTaskStartTime = task.getStartTime();
         LocalDateTime localDateTimeTaskEndTime = task.getEndTime();
-        if (task.getClassType() == TaskTypes.EPIC) {
+        if (task.getClassType() == TaskType.EPIC) {
             prioritizedTasks.add(task);
             return;
         }
         for (Task task1 : prioritizedTasks) {
-            if (task1.getClassType() == TaskTypes.EPIC) {
+            if (task1.getClassType() == TaskType.EPIC || task1.getStartTime() == null) {
                 continue;
             }
             LocalDateTime localDateTimeStartTimeInTasks = task1.getStartTime();
@@ -244,21 +243,21 @@ public class InMemoryTaskManager implements TaskManager {
 
     private void updateEpicStatus(int epicId) {
         Epic epic = epics.get(epicId);
-        ArrayList<Statuses> subStatuses = new ArrayList<>();
+        ArrayList<Status> subStatuses = new ArrayList<>();
         if (epic.getSubTasksId().isEmpty()) {
-            epic.setStatus(Statuses.NEW);
+            epic.setStatus(Status.NEW);
         }
         for (int id : epic.getSubTasksId()) {
             Subtask subtask = subtasks.get(id);
             subStatuses.add(subtask.getStatus());
         }
-        for (Statuses status : subStatuses) {
-            if (status.equals(subStatuses.get(0)) && status.equals(Statuses.DONE)) {
+        for (Status status : subStatuses) {
+            if (status.equals(subStatuses.get(0)) && status.equals(Status.DONE)) {
                 epic.setStatus(status);
-            } else if (status.equals(subStatuses.get(0)) && status.equals(Statuses.NEW)) {
+            } else if (status.equals(subStatuses.get(0)) && status.equals(Status.NEW)) {
                 epic.setStatus(status);
             } else {
-                epic.setStatus(Statuses.IN_PROGRESS);
+                epic.setStatus(Status.IN_PROGRESS);
                 break;
             }
         }

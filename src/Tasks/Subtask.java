@@ -1,23 +1,23 @@
 package Tasks;
 
-import Tasks.Enums.Statuses;
-import Tasks.Enums.TaskTypes;
+import Tasks.Enums.Status;
+import Tasks.Enums.TaskType;
 
 public class Subtask extends Task {
+    private final static TaskType type = TaskType.SUBTASK;
     private final int epicId;
-    private final static TaskTypes type = TaskTypes.SUBTASK;
 
-    public Subtask(String name, String description, Statuses status, int epicId, int duration, String startTime) {
+    public Subtask(String name, String description, Status status, int epicId, int duration, String startTime) {
         super(name, description, status, duration, startTime);
         this.epicId = epicId;
     }
 
-    public Subtask(Integer id, String name, Statuses status, String description, String startTime, int duration, int epicId) {
+    public Subtask(Integer id, String name, Status status, String description, String startTime, int duration, int epicId) {
         super(id, name, status, description, startTime, duration);
         this.epicId = epicId;
     }
 
-    public Subtask(String name, String description, Statuses status, int epicId) {
+    public Subtask(String name, String description, Status status, int epicId) {
         super(name, description, status);
         this.epicId = epicId;
     }
@@ -40,7 +40,7 @@ public class Subtask extends Task {
     }
 
     @Override
-    public TaskTypes getClassType() {
+    public TaskType getClassType() {
         return type;
     }
 
