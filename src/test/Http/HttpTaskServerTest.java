@@ -2,6 +2,8 @@ package Http;
 
 import Managers.Files.FileBackedTasksManager;
 import Managers.Http.HttpTaskServer;
+import Tasks.Enums.Status;
+import Tasks.Subtask;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -46,6 +48,24 @@ public class HttpTaskServerTest {
     void testShouldReturnTaskById() throws IOException, InterruptedException {
         HttpClient client = HttpClient.newHttpClient();
         URI url = URI.create("http://localhost:8080/tasks/task/?id=3");
+        HttpRequest request = HttpRequest.newBuilder().uri(url).GET().header("Accept", "application/txt").build();
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        System.out.println(response.body());
+    }
+
+    @Test
+    void testShouldReturnEpicById() throws IOException, InterruptedException {
+        HttpClient client = HttpClient.newHttpClient();
+        URI url = URI.create("http://localhost:8080/tasks/epic/?id=1");
+        HttpRequest request = HttpRequest.newBuilder().uri(url).GET().header("Accept", "application/txt").build();
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        System.out.println(response.body());
+    }
+
+    @Test
+    void testShouldReturnSubtaskById() throws IOException, InterruptedException {
+        HttpClient client = HttpClient.newHttpClient();
+        URI url = URI.create("http://localhost:8080/tasks/subtask/?id=4");
         HttpRequest request = HttpRequest.newBuilder().uri(url).GET().header("Accept", "application/txt").build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         System.out.println(response.body());

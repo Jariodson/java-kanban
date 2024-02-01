@@ -73,26 +73,23 @@ public class HttpTaskServer {
     private void taskHandler(HttpExchange httpExchange) throws IOException {
         switch (httpExchange.getRequestMethod()) {
             case "GET" -> {
-                String id;
+                int id = 0;
                 if (httpExchange.getRequestURI().getQuery() != null) {
-                    id = httpExchange.getRequestURI().getQuery().substring("id=".length());
-                } else {
-                    id = "";
+                    id = Integer.parseInt(httpExchange.getRequestURI().getQuery().substring("id=".length()));
                 }
-                if (id.isEmpty()) {
+                if (id == 0) {
                     System.out.println("Вывод тасков");
                     final List<Task> tasks = taskManager.getTasks();
                     writeResponse(httpExchange, gson.toJson(tasks), 200);
                     return;
                 }
-                if (!taskManager.getTasks().isEmpty()
-                        && taskManager.getTasks().contains(taskManager.getTaskById(Integer.parseInt(id)))) {
+                if (taskManager.getTasks().stream().map(Task::getId).collect(Collectors.toList()).contains(id)) {
                     System.out.println("Вывод таски по id: " + id);
-                    final String taskByIdInJson = gson.toJson(taskManager.getTaskById(Integer.parseInt(id)));
+                    final String taskByIdInJson = gson.toJson(taskManager.getTaskById(id));
                     writeResponse(httpExchange, taskByIdInJson, 200);
-                    return;
+                }else {
+                    writeResponse(httpExchange, "Таски с ID: " + id + " не существует!", 404);
                 }
-                writeResponse(httpExchange, "Данного id:" + id + " не существует!", 404);
             }
             case "POST" -> {
                 System.out.println("Запись тасков");
@@ -125,24 +122,22 @@ public class HttpTaskServer {
     private void epicHandler(HttpExchange httpExchange) throws IOException {
         switch (httpExchange.getRequestMethod()) {
             case "GET" -> {
-                String id;
+                int id = 0;
                 if (httpExchange.getRequestURI().getQuery() != null) {
-                    id = httpExchange.getRequestURI().getQuery().substring("id=".length());
-                } else {
-                    id = "";
+                    id = Integer.parseInt(httpExchange.getRequestURI().getQuery().substring("id=".length()));
                 }
-                if (id.isEmpty()) {
+                if (id == 0) {
                     System.out.println("Вывод эпиков");
                     final List<Epic> tasks = taskManager.getEpics();
                     writeResponse(httpExchange, gson.toJson(tasks), 200);
                     return;
                 }
-                if (taskManager.getEpics().contains(taskManager.getEpicById(Integer.parseInt(id)))) {
+                if (taskManager.getEpics().stream().map(Task::getId).collect(Collectors.toList()).contains(id)) {
                     System.out.println("Вывод эпика по id: " + id);
-                    final String epicByIdInJson = gson.toJson(taskManager.getEpicById(Integer.parseInt(id)));
+                    final String epicByIdInJson = gson.toJson(taskManager.getEpicById(id));
                     writeResponse(httpExchange, epicByIdInJson, 200);
-                } else {
-                    writeResponse(httpExchange, "Данного id:" + id + " не существует!", 404);
+                }else {
+                    writeResponse(httpExchange, "Эпика с ID: " + id + " не существует!", 404);
                 }
             }
             case "POST" -> {
@@ -186,24 +181,22 @@ public class HttpTaskServer {
     private void subtaskHandler(HttpExchange httpExchange) throws IOException {
         switch (httpExchange.getRequestMethod()) {
             case "GET" -> {
-                String id;
+                int id = 0;
                 if (httpExchange.getRequestURI().getQuery() != null) {
-                    id = httpExchange.getRequestURI().getQuery().substring("id=".length());
-                } else {
-                    id = "";
+                    id = Integer.parseInt(httpExchange.getRequestURI().getQuery().substring("id=".length()));
                 }
-                if (id.isEmpty()) {
+                if (id == 0) {
                     System.out.println("Вывод сабтасков");
                     final List<Subtask> tasks = taskManager.getSubtasks();
                     writeResponse(httpExchange, gson.toJson(tasks), 200);
                     return;
                 }
-                if (taskManager.getSubtasks().contains(taskManager.getSubtaskById(Integer.parseInt(id)))) {
+                if (taskManager.getSubtasks().stream().map(Task::getId).collect(Collectors.toList()).contains(id)) {
                     System.out.println("Вывод сабтаски по id: " + id);
-                    final String epicByIdInJson = gson.toJson(taskManager.getSubtaskById(Integer.parseInt(id)));
-                    writeResponse(httpExchange, epicByIdInJson, 200);
-                } else {
-                    writeResponse(httpExchange, "Данного id:" + id + " не существует!", 404);
+                    final String subtaskByIdInJson = gson.toJson(taskManager.getSubtaskById(id));
+                    writeResponse(httpExchange, subtaskByIdInJson, 200);
+                }else {
+                    writeResponse(httpExchange, "Сабтаски с ID: " + id + " не существует!", 404);
                 }
             }
             case "POST" -> {

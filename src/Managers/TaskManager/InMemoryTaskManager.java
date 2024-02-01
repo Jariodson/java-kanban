@@ -229,16 +229,14 @@ public class InMemoryTaskManager implements TaskManager {
             }
             LocalDateTime localDateTimeStartTimeInTasks = task1.getStartTime();
             LocalDateTime localDateTimeTaskEndTimeInTasks = task1.getEndTime();
-            if (localDateTimeTaskEndTime.isBefore(localDateTimeStartTimeInTasks)) { //если задача закончена до начала другой
-                prioritizedTasks.add(task);
-                return;
-            } else if (localDateTimeTaskStartTime.isAfter(localDateTimeTaskEndTimeInTasks)) { //если задача начата после окончания другой
-                prioritizedTasks.add(task);
-                return;
-            } else {
-                throw new IllegalStateException("Нельзя делать задачи одновременно!");
+            //если задача закончена до начала другой или начата после окончания другой
+            if (localDateTimeTaskEndTime.isBefore(localDateTimeStartTimeInTasks)
+                    || localDateTimeTaskStartTime.isAfter(localDateTimeTaskEndTimeInTasks)) {
+                continue;
             }
+            throw new IllegalStateException("Нельзя делать задачи одновременно!");
         }
+        prioritizedTasks.add(task);
     }
 
     private void updateEpicStatus(int epicId) {

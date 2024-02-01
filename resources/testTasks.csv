@@ -1,6 +1,8 @@
 id,type,name,status,description,startTime,duration,endTime,epicId
 3,TASK,Task1,NEW,Описание таски,23.01.2024;15:04,20,23.01.2024;15:24
 1,EPIC,Epic1,NEW,Описание эпика,null,0,null
-2,EPIC,Epic2,NEW,Описание эпика,null,0,null
+2,EPIC,Epic2,NEW,Описание эпика,19.01.2024;16:04,40,null
+4,SUBTASK,Subtask1,NEW,Описание сабтаски,23.01.2024;16:04,10,23.01.2024;16:14,2
+5,SUBTASK,Subtask1,NEW,Описание сабтаски,19.01.2024;16:04,10,19.01.2024;16:14,2
 
-3,2,1
+4,3,1,2
